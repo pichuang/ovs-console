@@ -19,7 +19,7 @@ logger.addHandler(console)
 def run_cmd(command):
     return call(command.split(' '))
 
-class Shell(cmd.Cmd):
+class OVS_Shell(cmd.Cmd):
 
     intro = const.INTRO
     prompt = const.PROMPT
@@ -27,7 +27,9 @@ class Shell(cmd.Cmd):
     def emptyline(self):
         pass
 
-    # TODO: Show ovs-vsctl status
+    # TODO: Find and check binary path
+    # TODO: Find and check service daemon work well
+    # TODO:
 
     def do_show(self, s):
         run_cmd("ovs-vsctl show")
@@ -42,10 +44,12 @@ class Shell(cmd.Cmd):
                 logger.info("Create bridge {bridge}".format(bridge=s))
                 run_cmd("ovs-vsctl add-br {bridge}".format(bridge=s))
 
-            # TODO: delet bridge handle
+            # TODO: Delet bridge handle
 
             else:
+                # TODO nested bridge cli
                 logger.debug("go to bridge cli")
+                pass
         else:
             logger.info("Please type bridge name, like 'bridge ovs-br'")
 
@@ -59,7 +63,7 @@ def main():
     """
     Main function of ovs-console
     """
-    Shell().cmdloop()
+    OVS_Shell().cmdloop()
 
 if __name__ == "__main__":
     main()
