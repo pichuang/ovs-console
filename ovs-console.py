@@ -2,19 +2,8 @@ __author__ = 'Roan Huang'
 
 import cmd
 from subprocess import call
-from util import const
-
-'''
-Log handler
-'''
-import logging
-
-LEVEL = const.DEBUG_LEVEL
-logger = logging.getLogger(const.LOG_NAME)
-logger.setLevel(LEVEL)
-console = logging.StreamHandler()
-console.setLevel(LEVEL)
-logger.addHandler(console)
+from util.const import const
+from util.log import logger
 
 # TODO: Need move to util.py
 def run_cmd(command):
