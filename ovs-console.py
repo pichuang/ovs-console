@@ -17,7 +17,7 @@ bridge_actions = [
     'help',
 ]
 
-class OVS_Shell(cmd.Cmd):
+class OVSShell(cmd.Cmd):
 
     intro = const.INTRO
     prompt = const.PROMPT
@@ -96,7 +96,7 @@ def main():
     """
     Main function of ovs-console
     """
-    OVS_Shell().cmdloop()
+    OVSShell().cmdloop()
 
 
 if __name__ == "__main__":
