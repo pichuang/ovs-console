@@ -1,13 +1,9 @@
 __author__ = 'Roan Huang'
 
 import cmd
-from subprocess import call
-from util.const import const
-from util.log import logger
-
-# TODO: Need move to util.py
-def run_cmd(command):
-    return call(command.split(' '))
+from utils.const import const
+from utils.log import logger
+from utils.util import *
 
 
 bridge_actions = [
@@ -16,6 +12,7 @@ bridge_actions = [
     'delete',
     'help',
 ]
+
 
 class OVSShell(cmd.Cmd):
 
@@ -33,7 +30,6 @@ class OVSShell(cmd.Cmd):
 
     def do_list(self, s):
         run_cmd("ovs-vsctl list-br")
-
 
     """
     Bridge handle

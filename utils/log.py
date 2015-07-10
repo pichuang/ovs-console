@@ -1,11 +1,12 @@
 __author__ = 'root'
 
-from util import const
+from utils import const
 import logging
 from logging import Logger
 
 
 LEVEL = const.DEBUG_LEVEL
+
 
 class OVSconsolelogger(Logger, object):
 
