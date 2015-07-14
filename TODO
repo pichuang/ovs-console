@@ -1,0 +1,16 @@
+
+list bridge:
+
+ovs> bridge list
+s1
+s2
+
+add bridge or input bridge console:
+ovs> bridge add s1
+
+del bridge or input brdige console:
+ovs> bridge del s1
+
+init database:
+ovs> emer-reset
+"need to check"

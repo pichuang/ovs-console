@@ -1,21 +1,24 @@
+#!/usr/bin/env python3
+
 __author__ = 'Roan Huang'
 
 import cmd
-from utils.const import const
+
+from utils import const
 from utils.log import logger
 from utils.util import *
 
 
-bridge_actions = [
-    'list',
-    'add',
-    'delete',
-    'help',
-]
+def auto_complete(text, list):
+    if text:
+        return [
+            action for action in list if action.startswith(text)
+            ]
+    else:
+        return list
 
 
 class OVSShell(cmd.Cmd):
-
     intro = const.INTRO
     prompt = const.PROMPT
 
@@ -36,15 +39,21 @@ class OVSShell(cmd.Cmd):
     - complete_bridge
     - do_bridge
     """
+
     def complete_bridge(self, text, line, start_index, end_index):
+        bridge_actions = ['list', 'add', 'delete', 'help', ]
+
+        # TODO: Dynamic generate exist bridge list
+        exist_bridge_list = ['aaa', 'bbb', 'ccc']
+        line_list = line.split()
+        logger.debug("Line: {line_list}, Text: {text}, List count: {count}".format(line_list=line_list, text=text,
+                                                                                   count=len(line_list), end=''))
+
         # XXX: Maybe have some pretty work
-        if text:
-            return [
-                action for action in bridge_actions
-                if action.startswith(text)
-            ]
-        else:
-            return bridge_actions
+        if line_list[1] == 'delete' and (len(line_list) == 2 or text not in exist_bridge_list):
+            return auto_complete(text, exist_bridge_list)
+        elif len(line_list) == 1 or text not in bridge_actions:
+            return auto_complete(text, bridge_actions)
 
     def do_bridge(self, s):
         if s is not '':
@@ -59,15 +68,17 @@ class OVSShell(cmd.Cmd):
             if run_cmd("ovs-vsctl br-exists {bridge}".format(bridge=bridge_name)) == 2:
                 bridge_exists = False
 
-            logger.debug("DEBUG: action_name:{0} bridge_name:{1} bridge_exists:{2}".format(action_name, bridge_name, bridge_exists))
+            logger.debug("DEBUG: action_name:{0} bridge_name:{1} bridge_exists:{2}".format(action_name, bridge_name,
+                                                                                           bridge_exists))
 
             # TODO: actions alias map, like 'delete == del'
             if action_name == "add":
-                if bridge_exists is False:
+                if bridge_exists is False and bridge_name is not '':
                     logger.info("Create bridge '{bridge}'".format(bridge=bridge_name))
                     run_cmd("ovs-vsctl add-br {bridge}".format(bridge=bridge_name))
                 elif bridge_exists is True:
-                    logger.info("Can't create bridge '{bridge}', because one bridge name same to its".format(bridge=str(bridge_name)))
+                    logger.info("Can't create bridge '{bridge}', because one bridge name same to its".format(
+                        bridge=str(bridge_name)))
             elif action_name == "delete":
                 # TODO: Enumerate all exists bridge, and do autocomplete
                 if bridge_exists is True:
@@ -80,6 +91,15 @@ class OVSShell(cmd.Cmd):
 
         else:
             logger.info("Please type bridge name, like 'bridge help'")
+            pass
+
+    def do_health(self, s):
+
+        ovsdb_server_status, ovs_vswitchd_status = False, False
+
+        if s is not '':
+            pass
+        else:
             pass
 
     def do_version(self, s):
