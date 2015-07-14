@@ -19,5 +19,5 @@ function install_devel_env {
 }
 
 function into_devel_env {
-    source env27/bin/activate
+    source dev/env27/bin/activate
 }
