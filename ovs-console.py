@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
+from __future__ import absolute_import, division, print_function
 __author__ = 'Roan Huang'
 
 import cmd
-
 from utils import const
 from utils.log import logger
 from utils.util import *

@@ -21,3 +21,8 @@ function install_devel_env {
 function into_devel_env {
     source dev/env27/bin/activate
 }
+
+fuction install_pip {
+    echo "Install pip"
+    pip install future six
+}
