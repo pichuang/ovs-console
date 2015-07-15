@@ -1,10 +1,8 @@
 #!/usr/bin/env python2
 
-from __future__ import absolute_import, division, print_function
 __author__ = 'Roan Huang'
 
 import cmd
-from utils import const
 from utils.log import logger
 from utils.util import *
 
@@ -19,8 +17,8 @@ def auto_complete(text, list):
 
 
 class OVSShell(cmd.Cmd):
-    intro = const.INTRO
-    prompt = const.PROMPT
+    intro = "Welcome to use OpenvSwitch Console"
+    prompt = "ovs> "
 
     def emptyline(self):
         pass
@@ -58,10 +56,21 @@ class OVSShell(cmd.Cmd):
     def do_bridge(self, s):
         if s is not '':
             # Split input string and convert from list to string
-            action_name, *bridge_name = s.split(' ')
-            action_name = ''.join(action_name)
-            if bridge_name is not '':
-                bridge_name = ''.join(bridge_name)
+            # Only for python3
+            # action_name, *bridge_name = s.split(' ')
+            # action_name = ''.join(action_name)
+            # if bridge_name is not '':
+            #     bridge_name = ''.join(bridge_name)
+
+            command_list = []
+            # 1. action_name 2. more string
+            command_list.append(s.split(' '))
+            action_name = command_list[0]
+            if len(command_list)
+            bridge_name = command_list[1]
+
+
+
 
             # Check bridge exists or not
             bridge_exists = True

@@ -3,15 +3,19 @@ __author__ = 'root'
 from subprocess import call
 import subprocess
 
+
 def run_cmd(command):
     return call(command.split(' '))
+
 
 def return_cmd(command):
     return subprocess.check_output(command)
 
+
 def list_br():
     print(return_cmd("ovs-vsctl list-br"))
     return None
+
 
 class Cmd(object):
     def __init__(self, command=""):

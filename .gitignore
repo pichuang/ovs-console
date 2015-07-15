@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 dev/env27
+.ropeproject/*

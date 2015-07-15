@@ -1,17 +1,16 @@
 __author__ = 'root'
 
-from utils import const
 import logging
 from logging import Logger
 
 
-LEVEL = const.DEBUG_LEVEL
+LEVEL = "DEBUG"
 
 
 class OVSconsolelogger(Logger, object):
 
     def __init__(self):
-        Logger.__init__(self, "ovs-console")
+        Logger.__init__(self, "OVS-CONSOLE")
         # Create console handler
         console = logging.StreamHandler()
 
