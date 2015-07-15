@@ -55,22 +55,14 @@ class OVSShell(cmd.Cmd):
 
     def do_bridge(self, s):
         if s is not '':
+            # XXX: need refactor
             # Split input string and convert from list to string
-            # Only for python3
-            # action_name, *bridge_name = s.split(' ')
-            # action_name = ''.join(action_name)
-            # if bridge_name is not '':
-            #     bridge_name = ''.join(bridge_name)
-
             command_list = []
-            # 1. action_name 2. more string
             command_list.append(s.split(' '))
             action_name = command_list[0]
-            if len(command_list)
-            bridge_name = command_list[1]
-
-
-
+            bridge_name = ""
+            if len(command_list) >= 2:
+                bridge_name = command_list[1]
 
             # Check bridge exists or not
             bridge_exists = True
