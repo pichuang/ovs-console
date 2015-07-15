@@ -6,8 +6,10 @@ def run_cmd(command):
     return envoy.run(command)
 
 def list_br():
-    print(return_cmd("ovs-vsctl list-br"))
-    return None
+    output = run_cmd("ovs-vsctl list-br").std_out
+    result = output.split('\n')
+    del result[-1]  # Delete useless element in list
+    return result
 
 def auto_complete(text, list):
     if text:
@@ -17,5 +19,3 @@ def auto_complete(text, list):
     else:
         return list
 
-# command = Cmd("ls").execute()
-# print(command.getoutput())

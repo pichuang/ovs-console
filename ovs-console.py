@@ -32,8 +32,7 @@ class OVSShell(cmd.Cmd):
     def complete_bridge(self, text, line, start_index, end_index):
         bridge_actions = ['list', 'add', 'delete', 'help', ]
 
-        # TODO: Dynamic generate exist bridge list
-        exist_bridge_list = ['aaa', 'bbb', 'ccc']
+        exist_bridge_list = list_br()
         line_list = line.split()
         logger.debug("Line: {line_list}, Text: {text}, List count: {count}".format(line_list=line_list, text=text,
                                                                                    count=len(line_list), end=''))
@@ -48,38 +47,41 @@ class OVSShell(cmd.Cmd):
         if s is not '':
             # XXX: need refactor
             # Split input string and convert from list to string
-            command_list = []
-            command_list.append(s.split(' '))
+            command_list = s.split(' ')
             action_name = command_list[0]
             bridge_name = ""
             if len(command_list) >= 2:
                 bridge_name = command_list[1]
 
             # Check bridge exists or not
-            bridge_exists = True
-            if run_cmd("ovs-vsctl br-exists {bridge}".format(bridge=bridge_name)).status_code == 2:
-                bridge_exists = False
+            # retcode:
+            # 0: exists
+            # 1: no args
+            # 2: not exists
+            bridge_exists = False
+            if run_cmd("ovs-vsctl br-exists {bridge}".format(bridge=bridge_name)).status_code == 0:
+                bridge_exists = True
 
-            logger.debug("DEBUG: action_name:{0} bridge_name:{1} bridge_exists:{2}".format(action_name, bridge_name,
-                                                                                           bridge_exists))
+            logger.debug("DEBUG: command_list:{0} bridge_exists:{1} ".format(command_list, bridge_exists))
 
             # TODO: actions alias map, like 'delete == del'
             if action_name == "add":
                 if bridge_exists is False and bridge_name is not '':
-                    logger.info("Create bridge '{bridge}'".format(bridge=bridge_name))
-                    run_cmd("ovs-vsctl add-br {bridge}".format(bridge=bridge_name))
+                    logger.info("Create bridge '{0}'".format(bridge_name))
+                    run_cmd("ovs-vsctl add-br {0}".format(bridge_name))
                 elif bridge_exists is True:
-                    logger.info("Can't create bridge '{bridge}', because one bridge name same to its".format(
-                        bridge=str(bridge_name)))
+                    logger.info("Can't create bridge '{0}', because one bridge name same to its".format(
+                        str(bridge_name)))
             elif action_name == "delete":
                 # TODO: Enumerate all exists bridge, and do autocomplete
                 if bridge_exists is True:
-                    logger.info("Delete bridge '{bridge}'".format(bridge=bridge_name))
-                    run_cmd("ovs-vsctl del-br {bridge}".format(bridge=bridge_name))
+                    logger.info("Delete bridge '{0}'".format(bridge_name))
+                    run_cmd("ovs-vsctl del-br {0}".format(bridge_name))
                 elif bridge_exists is False:
-                    logger.info("Can't delete not exists bridge '{bridge}'".format(bridge=bridge_name))
-            if action_name == "list":
-                run_cmd("ovs-vsctl list-br")
+                    logger.info("Can't delete not exists bridge '{0}'".format(bridge_name))
+            elif action_name == "list":
+                for result in list_br():
+                    print(result)
 
         else:
             logger.info("Please type bridge name, like 'bridge help'")
