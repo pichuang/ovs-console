@@ -7,15 +7,6 @@ from utils.log import logger
 from utils.util import *
 
 
-def auto_complete(text, list):
-    if text:
-        return [
-            action for action in list if action.startswith(text)
-            ]
-    else:
-        return list
-
-
 class OVSShell(cmd.Cmd):
     intro = "Welcome to use OpenvSwitch Console"
     prompt = "ovs> "
@@ -66,7 +57,7 @@ class OVSShell(cmd.Cmd):
 
             # Check bridge exists or not
             bridge_exists = True
-            if run_cmd("ovs-vsctl br-exists {bridge}".format(bridge=bridge_name)) == 2:
+            if run_cmd("ovs-vsctl br-exists {bridge}".format(bridge=bridge_name)).status_code == 2:
                 bridge_exists = False
 
             logger.debug("DEBUG: action_name:{0} bridge_name:{1} bridge_exists:{2}".format(action_name, bridge_name,
